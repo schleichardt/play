@@ -1,5 +1,9 @@
 package play.test;
 
+import org.apache.commons.lang.StringUtils;
+import play.exceptions.TemplateCompilationException;
+import play.templates.Template;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +12,10 @@ public class Helpers {
     static Pattern pattern = Pattern.compile("^(\\w+)\\(\\s*(?:('(?:\\\\'|[^'])*'|[^.]+?)\\s*(?:,\\s*('(?:\\\\'|[^'])*'|[^.]+?)\\s*)?)?\\)$");
 
     public static String[] seleniumCommand(String command) {
+        return seleniumCommand(command, null, null);
+    }
+
+    public static String[] seleniumCommand(String command, Template template, Integer lineNumber) {
         Matcher matcher = pattern.matcher(command.trim());
         if (matcher.matches()) {
             String[] result = new String[3];
@@ -22,6 +30,12 @@ public class Helpers {
             }
             return result;
         } else {
+            if (StringUtils.isNotBlank(command) && template != null && lineNumber != null) {
+                //TODO test if it works with nested templates
+                //TODO ant test
+                //TODO write tests, for example with https://play.lighthouseapp.com/projects/57987/tickets/695-selenium-tests-being-silently-ignored => verifyElementPresent('//ul[@id='home']/li/[a.='Login']') should not compile
+                throw new TemplateCompilationException(template, lineNumber, "invalid Selenium syntax");
+            }
             return null;
         }
     }
