@@ -367,6 +367,8 @@ public class GroovyTemplate extends BaseTemplate {
             args.put("messages", getBinding().getVariables().get("messages"));
             args.put("out", getBinding().getVariable("out"));
             args.put("_attrs", attrs);
+            args.put("_template", template);
+            args.put("_lineNumber", fromLine);
             // all other vars are template-specific
             args.put("_caller", getBinding().getVariables());
             if (attrs != null) {

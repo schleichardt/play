@@ -6,13 +6,14 @@
         </tr>
     </thead>
     <tbody>
+      %{ int lineNumber = _lineNumber; }%
       #{list items:_body.toString().split('\n'), as:'command'}
       %{ if(command.trim().startsWith('//') || command.trim().startsWith('#')) { %}
         <tr>
             <td colspan="3" style="font-style:italic; background: #e2e2e2">${command}</td>
         </tr>
-      %{ } else { 
-            def parts = play.test.Helpers.seleniumCommand(command); }%
+      %{ } else {
+            def parts = play.test.Helpers.seleniumCommand(command, _template, lineNumber); }%
             %{ if(parts && parts[0]) { }%
               <tr>
                 <td width="33%">${parts[0] ?: ''}</td>
@@ -21,6 +22,7 @@
               </tr>
             %{ } }%
       %{ } }%
+      %{ lineNumber++; }%
       #{/list}
     </tbody>
 </table>
