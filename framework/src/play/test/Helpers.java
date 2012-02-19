@@ -1,6 +1,7 @@
 package play.test;
 
 import org.apache.commons.lang.StringUtils;
+import play.Logger;
 import play.exceptions.TemplateCompilationException;
 import play.templates.Template;
 
@@ -34,6 +35,7 @@ public class Helpers {
                 //TODO test if it works with nested templates
                 //TODO ant test
                 //TODO write tests, for example with https://play.lighthouseapp.com/projects/57987/tickets/695-selenium-tests-being-silently-ignored => verifyElementPresent('//ul[@id='home']/li/[a.='Login']') should not compile
+                Logger.error("Can't parse Selenium command (" + command + ")");
                 throw new TemplateCompilationException(template, lineNumber, "invalid Selenium syntax");
             }
             return null;
